@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit{
   
   registerMode=false;
+  forgotPassMode=false;
   users:any;
   
-  constructor(){}
+  constructor(public accountService: AccountService){}
 
   ngOnInit(): void {
     
@@ -20,10 +22,15 @@ export class HomeComponent implements OnInit{
     this.registerMode=!this.registerMode;
   }
 
+  forgotToggle(){
+    this.forgotPassMode=!this.forgotPassMode;
+  }
+  
   
 
-  cancelRegisterMode(event: boolean){
+  cancel(event: boolean){
     this.registerMode=event;
+    this.forgotPassMode=event;
   }
 
 }

@@ -4,6 +4,8 @@ import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
 import { environment } from 'src/environments/environment';
 import { PresenceService } from './presence.service';
+import { ForgotPassword } from '../_models/forgotPassword';
+import { ResetPasswordDto } from '../_models/resetPassword';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +37,15 @@ export class AccountService {
         }
       })
     )
+  }
+
+
+  forgotPassword(body: ForgotPassword){
+    return this.http.post(this.baseUrl+'account/forgotPassword',body);
+  }
+
+  resetPassword(body: ResetPasswordDto){
+    return this.http.post(this.baseUrl+'account/resetPassword',body);
   }
 
   setCurrentUser(user:User){

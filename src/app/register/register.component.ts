@@ -10,13 +10,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  @Output() cancelRegister =new EventEmitter();
+  @Output() cancelMode =new EventEmitter();
   registerForm: FormGroup =new FormGroup({});
   maxDate: Date=new Date();
   validationErrors:string[] | undefined;
 
   constructor(private accountService:AccountService,
-    private toastr:ToastrService, private fb:FormBuilder, private router:Router) { }
+     private fb:FormBuilder, private router:Router) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -27,11 +27,12 @@ export class RegisterComponent implements OnInit {
     this.registerForm=this.fb.group({
       gender: ['male'],
       username: ['',Validators.required],
+      email:['',Validators.email],
       knowAs: ['',Validators.required],
       dateOfBirth: ['',Validators.required],
       city: ['',Validators.required],
       country: ['',Validators.required],
-      password: ['',[Validators.required,Validators.minLength(4),Validators.maxLength(10)]],
+      password: ['',[Validators.minLength(4),Validators.maxLength(20)]],
       confirmPassword: ['',[Validators.required,this.matchValues('password')]],
     });
     this.registerForm.controls['password'].valueChanges.subscribe({
@@ -50,16 +51,17 @@ export class RegisterComponent implements OnInit {
     const values={...this.registerForm.value, dateOfBirth: dob};
       this.accountService.register(values).subscribe({
         next:()=>{
-          this.router.navigateByUrl('/members')
+          this.router.navigateByUrl('/members');
         },
         error: error=>{
-         this.validationErrors=error
+          console.log(error);
+         this.validationErrors=error.error.map((err:any)=>err.description);
        }
       })
   }
 
   cancel(){
-    this.cancelRegister.emit(false);
+    this.cancelMode.emit(false);
   }
 
   private getDateOnly(dob:string | undefined){

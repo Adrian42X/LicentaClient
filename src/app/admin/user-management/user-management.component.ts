@@ -10,7 +10,10 @@ import { RolesModalComponent } from 'src/app/modals/roles-modal/roles-modal.comp
   styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent implements OnInit{
-   users: User[]=[];
+   
+  
+  
+  users: User[]=[];
    bsModalRef: BsModalRef<RolesModalComponent>=new BsModalRef<RolesModalComponent>();
   availableRoles=[
     'Admin',
@@ -33,7 +36,7 @@ export class UserManagementComponent implements OnInit{
     const config={
       class:'modal-dialog-centered',
       initialState:{
-        username: user.username,
+        username: user.userName,
         availableRoles: this.availableRoles,
         selectedRoles:[...user.roles]
       }
@@ -44,7 +47,7 @@ export class UserManagementComponent implements OnInit{
       next:()=>{
         const selectedRoles=this.bsModalRef.content?.selectedRoles;
         if(!this.arrayEqual(selectedRoles!,user.roles)){
-          this.adminService.updateUserRoles(user.username,selectedRoles!).subscribe({
+          this.adminService.updateUserRoles(user.userName,selectedRoles!).subscribe({
               next: roles=>user.roles=roles
           })
         }

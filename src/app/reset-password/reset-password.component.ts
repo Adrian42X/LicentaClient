@@ -46,7 +46,8 @@ export class ResetPasswordComponent implements OnInit{
     }
 
     this.service.resetPassword(resetPassDto).subscribe({
-      next:()=>this.message='Your password has been changed'
+      next:()=>{this.message='Your password has been changed'},
+      error:()=>this.message='Problem when resetting your password, please try again'
     })
   }
 
